@@ -32,6 +32,19 @@ Create your `.env` file using the template from [here](./src/.env.example)
   poetry run uvicorn src.main:app
 ```
 
+### ⚠️ Don't Forget!
+
+- **env.py** - Make sure to set your DB URL here:
+```python
+# Look for this line and change it:
+sqlalchemy.url = your_database_url_here
+```
+- **alembic.ini** - Update this too:
+```ini
+[alembic]
+sqlalchemy.url = your_database_url_here
+```
+
 ### Request example
 
 ```bash
