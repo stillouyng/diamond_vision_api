@@ -1,0 +1,85 @@
+from src.core.config import logger
+from src.core.exceptions import (
+    DatabaseNotFound, RepositoryError, ServiceError, ComplaintNotFound
+)
+from src.models.models import Complaint
+from src.models.schemas import ComplaintCreate, ComplaintUpdate, \
+    ComplaintSentimentCreate
+from src.repositories import ComplaintRepository
+
+
+class ComplaintService:
+    def __init__(self, repository: ComplaintRepository):
+        self.repository = repository
+
+    async def add_complaint(
+            self,
+            complaint_data: ComplaintCreate,
+            complaint_sentiment: ComplaintSentimentCreate
+    ) -> Complaint:
+        """
+        Adds a complaint to the database.
+        :param complaint_data: Complaint data as a ComplaintCreate schema.
+        :param complaint_sentiment: Sentiment as a CSC schema.
+        :raises DatabaseNotFound: Database not found.
+        :raises RepositoryError: Raises on SQLAlchemyError | unknown errors.
+        :raises ServiceError: Raised on unexpected errors.
+        :return: Complaint object.
+        """
+        try:
+            logger.info(
+                f"Creates a complaint: {complaint_data.text[:20]}..."
+            )
+            complaint = await self.repository.create_complaint(
+                complaint_data, complaint_sentiment)
+            logger.info(f"Complaint created successfully. ID: {complaint.id}")
+            return complaint
+        except DatabaseNotFound as e:
+            logger.error(f"Database not found: {e.details}")
+            raise
+        except RepositoryError as e:
+            logger.error(f"Repository error: {e.details}")
+            raise
+        except Exception as e:
+            logger.error(
+                f"Unexpected error creating complaint: {e}",
+                exc_info=True
+            )
+            raise ServiceError("Complaint creation failed", details=str(e))
+
+    async def update_complaint(
+            self, complaint_id: int, complaint_data: ComplaintUpdate
+    ) -> Complaint:
+        """
+        Updates a complaint from the database.
+        :param complaint_id: ID of the complaint to be updated.
+        :param complaint_data: Complaint data as a ComplaintUpdate schema.
+        :return: Complaint object.
+        """
+        try:
+            logger.info(
+                f"Updates a complaint. ID: {complaint_id}"
+            )
+            complaint = await self.repository.update_complaint(
+                complaint_id, complaint_data
+            )
+            logger.info(f"Complaint updated successfully. ID: {complaint.id}")
+            return complaint
+        except DatabaseNotFound as e:
+            logger.error(f"Database not found: {e.details}")
+            raise
+        except RepositoryError as e:
+            logger.error(f"Repository error: {e.details}")
+            raise
+        except ComplaintNotFound as e:
+            logger.error(f"Complaint not found: {e.details}")
+            raise
+        except Exception as e:
+            logger.error(
+                f"Unexpected error updating complaint: {e}",
+                exc_info=True
+            )
+            raise ServiceError(
+                "Complaint update failed",
+                details=str(e)
+            )
