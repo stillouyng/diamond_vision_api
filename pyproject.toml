@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "diamond-vision-api"
+version = "0.1.0"
+description = ""
+authors = ["stillouyng <kkodokkushi@gmail.com>"]
+readme = "README.md"
+packages = [
+    { include = "src" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.13"
+fastapi = "^0.116.0"
+uvicorn = "^0.35.0"
+httpx = "^0.28.1"
+sqlalchemy = "^2.0.41"
+python-dotenv = "^1.1.1"
+pydantic-settings = "^2.10.1"
+aiosqlite = "^0.21.0"
+alembic = "^1.16.3"
+greenlet = "^3.2.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
