@@ -17,17 +17,21 @@ I'm fetching data from [ip-api](https://ip-api.com),
 but honestly I'm not even sure why.
 Right now it just prints to console and logs to `LOG_FILE`.
 
+
 ### Environment file
+
 Create your `.env` file using the template from [here](./src/.env.example)
 
 
-### Start-up example
+### Quickstart
+
 1. Create an `.env` file.
-2. Install requirements: 
+2. Create a database. Default location is: `./instance/database.sqlite`.
+3. Install requirements: 
 ```bash 
   poetry install
 ```
-3. Run the server.
+4. Run the server.
 ```bash
   poetry run uvicorn src.main:app
 ```
