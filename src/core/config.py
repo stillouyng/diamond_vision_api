@@ -31,6 +31,9 @@ class APISettings(BaseSettings):
     SENTIMENT_ANALYSIS_BASE_URL: str
     SENTIMENT_ANALYSIS_API_KEY: str
 
+    OPEN_ROUTER_BASE_URL: str
+    OPEN_ROUTER_API_KEY: str
+
     IP_API_BASE_URL: str
 
 
