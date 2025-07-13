@@ -149,7 +149,7 @@ async def get_new_complaints(
     :param service: ComplaintService object.
     :return: list of ComplaintResponse.
     """
-    filters =ComplaintFilters(
+    filters = ComplaintFilters(
         status=ComplaintStatus.OPEN,
         timestamp={
             "start_date": datetime.now(timezone.utc) - timedelta(hours=1),
