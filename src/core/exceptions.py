@@ -140,3 +140,13 @@ class TooManyRequests(AppException):
         super().__init__(
             message, status.HTTP_429_TOO_MANY_REQUESTS, details
         )
+
+class AIException(AppException):
+    def __init__(
+            self,
+            message: str,
+            details: Optional[str] = None
+    ):
+        super().__init__(
+            message, status.HTTP_500_INTERNAL_SERVER_ERROR, details
+        )
