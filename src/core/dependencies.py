@@ -78,5 +78,22 @@ async def get_ip_api_client() -> AsyncGenerator[ExternalAPIClient, None]:
         pass
 
 
+async def get_hugging_face_client() -> AsyncGenerator[ExternalAPIClient, None]:
+    try:
+        api_client = ExternalAPIClient(
+            base_url=api_settings.OPEN_ROUTER_BASE_URL,
+            extra_headers={
+                "Authorization": f"Bearer {api_settings.OPEN_ROUTER_API_KEY}"
+            }
+        )
+        async with api_client:
+            yield api_client
+    finally:
+        pass
+
+
 ApiLayerClientDep = Annotated[ExternalAPIClient, Depends(get_api_layer_client)]
 ApiIPClientDep = Annotated[ExternalAPIClient, Depends(get_ip_api_client)]
+ApiHuggingFaceClientDep = Annotated[
+    ExternalAPIClient, Depends(get_hugging_face_client)
+]
