@@ -4,7 +4,7 @@ from src.core.exceptions import (
 )
 from src.models.models import Complaint
 from src.models.schemas import ComplaintCreate, ComplaintUpdate, \
-    ComplaintSentimentCreate
+    ComplaintSentimentCreate, ComplaintCategoryCreate
 from src.repositories import ComplaintRepository
 
 
@@ -15,12 +15,14 @@ class ComplaintService:
     async def add_complaint(
             self,
             complaint_data: ComplaintCreate,
-            complaint_sentiment: ComplaintSentimentCreate
+            complaint_sentiment: ComplaintSentimentCreate,
+            complaint_category: ComplaintCategoryCreate
     ) -> Complaint:
         """
         Adds a complaint to the database.
         :param complaint_data: Complaint data as a ComplaintCreate schema.
         :param complaint_sentiment: Sentiment as a CSC schema.
+        :param complaint_category: Category as a CCC schema.
         :raises DatabaseNotFound: Database not found.
         :raises RepositoryError: Raises on SQLAlchemyError | unknown errors.
         :raises ServiceError: Raised on unexpected errors.
@@ -31,7 +33,8 @@ class ComplaintService:
                 f"Creates a complaint: {complaint_data.text[:20]}..."
             )
             complaint = await self.repository.create_complaint(
-                complaint_data, complaint_sentiment)
+                complaint_data, complaint_sentiment, complaint_category
+            )
             logger.info(f"Complaint created successfully. ID: {complaint.id}")
             return complaint
         except DatabaseNotFound as e:
