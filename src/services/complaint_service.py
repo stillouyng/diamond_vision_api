@@ -1,10 +1,15 @@
+from datetime import datetime
+from typing import List, Any, Coroutine, Sequence
+
+from sqlalchemy import Row, RowMapping
+
 from src.core.config import logger
 from src.core.exceptions import (
     DatabaseNotFound, RepositoryError, ServiceError, ComplaintNotFound
 )
 from src.models.models import Complaint
 from src.models.schemas import ComplaintCreate, ComplaintUpdate, \
-    ComplaintSentimentCreate, ComplaintCategoryCreate
+    ComplaintFilters
 from src.repositories import ComplaintRepository
 
 
@@ -14,15 +19,11 @@ class ComplaintService:
 
     async def add_complaint(
             self,
-            complaint_data: ComplaintCreate,
-            complaint_sentiment: ComplaintSentimentCreate,
-            complaint_category: ComplaintCategoryCreate
+            complaint_data: ComplaintCreate
     ) -> Complaint:
         """
         Adds a complaint to the database.
         :param complaint_data: Complaint data as a ComplaintCreate schema.
-        :param complaint_sentiment: Sentiment as a CSC schema.
-        :param complaint_category: Category as a CCC schema.
         :raises DatabaseNotFound: Database not found.
         :raises RepositoryError: Raises on SQLAlchemyError | unknown errors.
         :raises ServiceError: Raised on unexpected errors.
@@ -33,7 +34,7 @@ class ComplaintService:
                 f"Creates a complaint: {complaint_data.text[:20]}..."
             )
             complaint = await self.repository.create_complaint(
-                complaint_data, complaint_sentiment, complaint_category
+                complaint_data
             )
             logger.info(f"Complaint created successfully. ID: {complaint.id}")
             return complaint
@@ -84,5 +85,35 @@ class ComplaintService:
             )
             raise ServiceError(
                 "Complaint update failed",
+                details=str(e)
+            )
+
+    async def get_complaints_by_time_range(
+            self, filters: ComplaintFilters,
+    ) -> Sequence[Row[Any] | RowMapping | Any] | None:
+        """
+        Returns a list of complaints based on the time created.
+        :param filters: ComplaintFilters object.
+        :raises ServiceError: Raises on unexpected errors.
+        :return: List[Complaint] if rows exists, None otherwise.
+        """
+        try:
+            logger.info(
+                f"Finds complaints by filters: {filters}"
+            )
+            complaints = await self.repository.get_complaints_list(
+                filters
+            )
+            return complaints
+        except DatabaseNotFound as e:
+            logger.error(f"Database not found: {e.details}")
+            raise
+        except RepositoryError as e:
+            logger.error(f"Repository error: {e.details}")
+            raise
+        except Exception as e:
+            logger.error(f"Unexpected error finding complaints: {e}")
+            raise ServiceError(
+                "Get complaints by time range failed",
                 details=str(e)
             )

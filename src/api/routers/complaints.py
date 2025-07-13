@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Any
 
 from fastapi import (
@@ -14,8 +14,7 @@ from src.core import (
 from src.core.exceptions import APIError, TooManyRequests
 from src.models.enums import ComplaintSentiment, ComplaintCategory
 from src.models.schemas import (
-    ComplaintResponse, ComplaintCreate, ComplaintSentimentCreate,
-    ComplaintCategoryCreate
+    ComplaintResponse, ComplaintCreate, ComplaintFilters, ComplaintListResponse
 )
 
 router = APIRouter()
@@ -125,13 +124,36 @@ async def add_complaint(
     except APIError:
         sentiment = ComplaintSentiment("unknown")
 
-    complaint_sentiment = ComplaintSentimentCreate(sentiment=sentiment)
-    complaint_category = ComplaintCategoryCreate(
-        category=classified_category if classified_category else "other"
-    )
+    complaint.sentiment = sentiment
+    if classified_category: complaint.category = classified_category
 
     return await service.add_complaint(
-        complaint,
-        complaint_sentiment,
-        complaint_category
+        complaint
     )
+
+
+@router.get(
+    "/get_new_complaints",
+    response_model=list[ComplaintListResponse] | None,
+    status_code=status.HTTP_200_OK
+)
+async def get_new_complaints(
+        request: Request,
+        service: ComplaintServiceDep,
+):
+    """
+    Get all new complaints by the last hour.
+    :param request: Request object.
+    :param service: ComplaintService object.
+    :return: list of ComplaintResponse.
+    """
+    filters =ComplaintFilters(
+        timestamp={
+            "start_date": datetime.now(timezone.utc) - timedelta(hours=1),
+            "end_date": datetime.now(timezone.utc)
+        }
+    )
+    complaints = await service.get_complaints_by_time_range(
+        filters
+    )
+    return complaints
