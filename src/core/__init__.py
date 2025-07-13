@@ -1,10 +1,10 @@
 from .dependencies import (
     ComplaintRepositoryDep, ComplaintServiceDep,
-    ApiIPClientDep, ApiLayerClientDep
+    ApiIPClientDep, ApiLayerClientDep, ApiHuggingFaceClientDep
 )
 
 
 __all__ = [
     "ComplaintRepositoryDep", "ComplaintServiceDep",
-    "ApiLayerClientDep", "ApiIPClientDep",
+    "ApiLayerClientDep", "ApiIPClientDep", "ApiHuggingFaceClientDep"
 ]
