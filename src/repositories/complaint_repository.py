@@ -1,6 +1,6 @@
 from typing import List, Any, Coroutine, Sequence
 
-from sqlalchemy import select, Row, RowMapping, and_
+from sqlalchemy import select, Row, RowMapping, and_, update
 from sqlalchemy.exc import OperationalError, SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -50,12 +50,10 @@ class ComplaintRepository:
 
     async def update_complaint(
             self,
-            complaint_id: int,
             complaint_data: ComplaintUpdate
     ) -> Complaint:
         """
         Updates a complaint.
-        :param complaint_id: Complaint ID.
         :param complaint_data: Complaint data as a ComplaintUpdate schema.
         :raises DatabaseNotFound: Database not found.
         :raises RepositoryError: Raises on SQLAlchemyError | unknown errors.
@@ -64,19 +62,17 @@ class ComplaintRepository:
         """
         try:
             result = await self.session.execute(
-                select(Complaint)
-                .where(Complaint.id == complaint_id)
+                update(Complaint)
+                .where(Complaint.id == complaint_data.id)
+                .values(**complaint_data.model_dump(exclude_unset=True))
+                .returning(Complaint)
             )
-
             complaint = result.scalar_one_or_none()
 
             if not complaint:
                 raise ComplaintNotFound(
-                    details=f"Complaint {complaint_id} not found"
+                    details=f"Complaint {complaint_data.id} not found"
                 )
-
-            for key, value in complaint_data.dict(exclude_unset=True).items():
-                setattr(complaint, key, value)
 
             await self.session.commit()
             await self.session.refresh(complaint)

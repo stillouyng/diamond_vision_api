@@ -52,20 +52,19 @@ class ComplaintService:
             raise ServiceError("Complaint creation failed", details=str(e))
 
     async def update_complaint(
-            self, complaint_id: int, complaint_data: ComplaintUpdate
+            self, complaint_data: ComplaintUpdate
     ) -> Complaint:
         """
         Updates a complaint from the database.
-        :param complaint_id: ID of the complaint to be updated.
         :param complaint_data: Complaint data as a ComplaintUpdate schema.
         :return: Complaint object.
         """
         try:
             logger.info(
-                f"Updates a complaint. ID: {complaint_id}"
+                f"Updates a complaint. ID: {complaint_data.id}"
             )
             complaint = await self.repository.update_complaint(
-                complaint_id, complaint_data
+                complaint_data
             )
             logger.info(f"Complaint updated successfully. ID: {complaint.id}")
             return complaint

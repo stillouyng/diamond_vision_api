@@ -14,7 +14,8 @@ from src.core import (
 from src.core.exceptions import APIError, TooManyRequests
 from src.models.enums import ComplaintSentiment, ComplaintCategory
 from src.models.schemas import (
-    ComplaintResponse, ComplaintCreate, ComplaintFilters, ComplaintListResponse
+    ComplaintResponse, ComplaintCreate, ComplaintFilters,
+    ComplaintListResponse, ComplaintUpdate
 )
 
 router = APIRouter()
@@ -157,3 +158,26 @@ async def get_new_complaints(
         filters
     )
     return complaints
+
+
+@router.patch(
+    "/update_complaint",
+    response_model=ComplaintResponse,
+    status_code=status.HTTP_200_OK
+)
+async def update_complaint(
+        request: Request,
+        complaint: ComplaintUpdate,
+        service: ComplaintServiceDep,
+):
+    """
+    Update a complaint.
+    :param request: Request object.
+    :param complaint: Fields as ComplaintUpdate schema.
+    :param service: ComplaintService object.
+    :return: ComplaintResponse.
+    """
+    updated = await service.update_complaint(
+        complaint
+    )
+    return updated

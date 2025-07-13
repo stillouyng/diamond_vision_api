@@ -43,6 +43,7 @@ class ComplaintListResponse(BaseModel):
 
 
 class ComplaintUpdate(BaseModel):
+    id: int
     text: Optional[str] = None
     status: Optional[ComplaintStatus] = None
     sentiment: Optional[ComplaintSentiment] = None
