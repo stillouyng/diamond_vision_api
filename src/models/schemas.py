@@ -15,6 +15,10 @@ class ComplaintSentimentCreate(BaseModel):
     sentiment: ComplaintSentiment
 
 
+class ComplaintCategoryCreate(BaseModel):
+    category: ComplaintCategory
+
+
 class ComplaintResponse(BaseModel):
     id: int
     status: ComplaintStatus
