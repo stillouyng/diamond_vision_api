@@ -49,6 +49,10 @@ sqlalchemy.url = your_database_url_here
 sqlalchemy.url = your_database_url_here
 ```
 
+### AI to classify the category
+
+I used [Open Router](https://openrouter.ai) with Mistral-7B-v0.3 model for free.
+
 ### Request example
 
 ```bash
