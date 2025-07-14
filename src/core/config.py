@@ -4,6 +4,8 @@ from logging.handlers import RotatingFileHandler
 
 from pathlib import Path
 from typing import Optional
+
+from pydantic import ConfigDict
 from pydantic_settings import BaseSettings
 from dotenv import load_dotenv
 
@@ -23,8 +25,7 @@ class LoggingSettings(BaseSettings):
     LOG_FORMAT: str = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     LOG_FILE: Optional[str] = "app.log"
 
-    class Config:
-        env_prefix = "LOG_"
+    model_config = ConfigDict(env_prefix="LOG_")
 
 
 class APISettings(BaseSettings):
