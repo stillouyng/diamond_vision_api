@@ -20,6 +20,30 @@ class ComplaintFilters(BaseModel):
     sentiment: Optional[ComplaintSentiment] = None
     timestamp: Optional[dict[str, datetime]] = None
 
+    @model_validator(mode="before")
+    def validate_timestamp(cls, values):
+        if "timestamp" not in values or values["timestamp"] is None:
+            return values
+
+        timestamp = values["timestamp"]
+        allowed_keys = {"start_date", "end_date"}
+
+        if not set(timestamp.keys()).issubset(allowed_keys):
+            raise ValueError(
+                f"Timestamp must contain only of: {allowed_keys}"
+            )
+
+        if not all(key in timestamp for key in allowed_keys):
+            raise ValueError(
+                f"Timestamp must have both of: {allowed_keys}"
+            )
+        else:
+            if timestamp["end_date"] < timestamp["start_date"]:
+                raise ValueError(
+                    "end_date must be >= start_date"
+                )
+        return values
+
 
 class ComplaintResponse(BaseModel):
     id: int
