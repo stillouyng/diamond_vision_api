@@ -7,13 +7,15 @@ from fastapi import (
 from starlette import status
 
 from src.core.config import logger
-from src.core import (
+from src.core.dependencies import (
     ComplaintServiceDep,
     ApiLayerClientDep, ApiIPClientDep, ApiHuggingFaceClientDep
 )
 from src.core.exceptions import APIError, TooManyRequests
-from src.models.enums import ComplaintSentiment, ComplaintCategory, \
+from src.models.enums import (
+    ComplaintSentiment, ComplaintCategory,
     ComplaintStatus
+)
 from src.models.schemas import (
     ComplaintResponse, ComplaintCreate, ComplaintFilters,
     ComplaintListResponse, ComplaintUpdate
