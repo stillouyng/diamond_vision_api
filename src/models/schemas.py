@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, model_validator, ConfigDict
 
 from .enums import (
     ComplaintStatus, ComplaintCategory, ComplaintSentiment
@@ -27,8 +27,7 @@ class ComplaintResponse(BaseModel):
     sentiment: ComplaintSentiment
     category: ComplaintCategory
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ComplaintListResponse(BaseModel):
@@ -38,8 +37,7 @@ class ComplaintListResponse(BaseModel):
     sentiment: ComplaintSentiment
     category: ComplaintCategory
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ComplaintUpdate(BaseModel):
