@@ -1,11 +1,13 @@
-from unittest.mock import AsyncMock
-
 import pytest
+from unittest.mock import AsyncMock
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.models.enums import (
     ComplaintSentiment, ComplaintCategory
 )
+
+from src.repositories import ComplaintRepository
+from src.services import ComplaintService
 
 
 @pytest.fixture
@@ -29,6 +31,17 @@ def mock_session():
 
 @pytest.fixture
 def repo(mock_session):
-    """Mocked ComplaintRepository."""
-    from src.repositories import ComplaintRepository
+    """ComplaintRepository with mocked session."""
     return ComplaintRepository(mock_session)
+
+
+@pytest.fixture
+def mock_repo(mock_session):
+    """Mocked ComplaintRepository."""
+    return AsyncMock()
+
+
+@pytest.fixture
+def service(mock_repo):
+    """ComplaintService with mocked session."""
+    return ComplaintService(mock_repo)
