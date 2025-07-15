@@ -2,6 +2,7 @@ import pytest
 from unittest.mock import AsyncMock
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.core.external_api import ExternalAPIClient
 from src.models.enums import (
     ComplaintSentiment, ComplaintCategory
 )
@@ -45,3 +46,9 @@ def mock_repo(mock_session):
 def service(mock_repo):
     """ComplaintService with mocked session."""
     return ComplaintService(mock_repo)
+
+
+@pytest.fixture
+def mock_client():
+    """Mocked ExternalAPI client."""
+    return ExternalAPIClient(base_url="http://test.com")
