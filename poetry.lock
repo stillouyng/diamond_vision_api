@@ -597,6 +597,24 @@ docs = ["sphinx (>=5.3)", "sphinx-rtd-theme (>=1)"]
 testing = ["coverage (>=6.2)", "hypothesis (>=5.7.1)"]
 
 [[package]]
+name = "pytest-httpx"
+version = "0.35.0"
+description = "Send responses to httpx."
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "pytest_httpx-0.35.0-py3-none-any.whl", hash = "sha256:ee11a00ffcea94a5cbff47af2114d34c5b231c326902458deed73f9c459fd744"},
+    {file = "pytest_httpx-0.35.0.tar.gz", hash = "sha256:d619ad5d2e67734abfbb224c3d9025d64795d4b8711116b1a13f72a251ae511f"},
+]
+
+[package.dependencies]
+httpx = "==0.28.*"
+pytest = "==8.*"
+
+[package.extras]
+testing = ["pytest-asyncio (==0.24.*)", "pytest-cov (==6.*)"]
+
+[[package]]
 name = "python-dotenv"
 version = "1.1.1"
 description = "Read key-value pairs from a .env file and set them as environment variables"
@@ -779,4 +797,4 @@ standard = ["colorama (>=0.4)", "httptools (>=0.6.3)", "python-dotenv (>=0.13)",
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.13"
-content-hash = "8ccbd045bf6285b73da80d4c9244c096350375f478782a100fccc5e396aaa556"
+content-hash = "a251feb9c62c51e64e2061c7ddc6668bdd138f8812a1eb10ebf0075d38930483"
