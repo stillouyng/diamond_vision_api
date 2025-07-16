@@ -2,6 +2,10 @@
 
 [![Workflow](https://github.com/stillouyng/diamond_vision_api/actions/workflows/workflow.yml/badge.svg)](https://github.com/stillouyng/diamond_vision_api/actions/workflows/workflow.yml)
 
+### Stack
+FastAPI, httpx, SQLAlchemy 2.0, pydantic, Alembic, pytest, Flake8, n8n  
+
+
 ### Spam Checker
 Spam checker weren't available, so i've created a little one. :)
 
