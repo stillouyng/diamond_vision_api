@@ -1,7 +1,12 @@
 import pytest
 from unittest.mock import AsyncMock
-from sqlalchemy.ext.asyncio import AsyncSession
 
+from fastapi import FastAPI
+from sqlalchemy.ext.asyncio import AsyncSession
+from starlette.testclient import TestClient
+
+from src.core.dependencies import ComplaintServiceDep, ApiLayerClientDep, \
+    ApiIPClientDep, ApiHuggingFaceClientDep
 from src.core.external_api import ExternalAPIClient
 from src.models.enums import (
     ComplaintSentiment, ComplaintCategory
@@ -52,3 +57,30 @@ def service(mock_repo):
 def mock_client():
     """Mocked ExternalAPI client."""
     return ExternalAPIClient(base_url="http://test.com")
+
+
+@pytest.fixture
+def mock_dependencies():
+    """Mocks all external dependencies for the endpoint"""
+    return {
+        "service": AsyncMock(spec=ComplaintService),
+        "api_layer": AsyncMock(spec=ExternalAPIClient),
+        "api_ip": AsyncMock(spec=ExternalAPIClient),
+        "api_hf": AsyncMock(spec=ExternalAPIClient)
+    }
+
+
+@pytest.fixture
+def client(mock_dependencies):
+    from src.api import complaints_router
+    app = FastAPI()
+    app.include_router(complaints_router, prefix="test/api/complaints")
+
+    app.dependency_overrides.update({
+        ComplaintServiceDep: lambda: mock_dependencies["service"],
+        ApiLayerClientDep: lambda: mock_dependencies["api_layer"],
+        ApiIPClientDep: lambda: mock_dependencies["api_ip"],
+        ApiHuggingFaceClientDep: lambda: mock_dependencies["api_hf"]
+    })
+
+    return TestClient(app)

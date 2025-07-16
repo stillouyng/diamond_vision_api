@@ -73,8 +73,9 @@ async def get_complaint_category(
                 return ComplaintCategory("technical")
             elif "neutral" in category_raw:
                 return ComplaintCategory("neutral")
-            else: return None
-    except Exception as e:
+            else:
+                return None
+    except Exception:
         return None
 
 
@@ -102,10 +103,9 @@ async def add_complaint(
     if last_request and now - last_request < timedelta(seconds=10):
         raise TooManyRequests(
             details=f"Try again "
-                    f"In {
-                    max(0, round((now - last_request).total_seconds()))
-                    } "
-                    f"seconds later."
+                    f"in {
+                        max(0, round((now - last_request).total_seconds()))
+                    } seconds later."
         )
     ip_request_cache[client_ip] = now
 
@@ -129,7 +129,8 @@ async def add_complaint(
         sentiment = ComplaintSentiment("unknown")
 
     complaint.sentiment = sentiment
-    if classified_category: complaint.category = classified_category
+    if classified_category:
+        complaint.category = classified_category
 
     return await service.add_complaint(
         complaint
