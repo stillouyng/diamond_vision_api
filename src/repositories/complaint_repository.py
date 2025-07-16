@@ -1,4 +1,6 @@
-from typing import List, Any, Coroutine, Sequence
+from typing import (
+    Any, Sequence
+)
 
 from sqlalchemy import select, Row, RowMapping, and_, update
 from sqlalchemy.exc import OperationalError, SQLAlchemyError
@@ -42,11 +44,11 @@ class ComplaintRepository:
             raise DatabaseNotFound(details=str(e))
         except SQLAlchemyError as e:
             raise RepositoryError(
-                f"Database operation failed",
+                "Database operation failed",
                 details=str(e)
             )
         except Exception as e:
-            raise RepositoryError(f"Unexpected error", details=str(e))
+            raise RepositoryError("Unexpected error", details=str(e))
 
     async def update_complaint(
             self,
@@ -81,11 +83,11 @@ class ComplaintRepository:
             raise DatabaseNotFound(details=str(e))
         except SQLAlchemyError as e:
             raise RepositoryError(
-                f"Database operation failed",
+                "Database operation failed",
                 details=str(e)
             )
         except Exception as e:
-            raise RepositoryError(f"Unexpected error", details=str(e))
+            raise RepositoryError("Unexpected error", details=str(e))
 
     async def get_complaints_list(
             self,
@@ -116,7 +118,8 @@ class ComplaintRepository:
                     )
                 )
             query = select(Complaint)
-            if conditions: query = query.where(and_(*conditions))
+            if conditions:
+                query = query.where(and_(*conditions))
             result = await self.session.execute(query)
             complaints = result.scalars().all()
             return complaints if complaints else None
@@ -124,8 +127,8 @@ class ComplaintRepository:
             raise DatabaseNotFound(details=str(e))
         except SQLAlchemyError as e:
             raise RepositoryError(
-                f"Database operation failed",
+                "Database operation failed",
                 details=str(e)
             )
         except Exception as e:
-            raise RepositoryError(f"Unexpected error", details=str(e))
+            raise RepositoryError("Unexpected error", details=str(e))
