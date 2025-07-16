@@ -41,7 +41,7 @@ jobs:
             ${{ runner.os }}-poetry-
 
       - name: Run Flake8
-        uses: poetry run flake8 .
+        run: poetry run flake8 .
 
       - name: Run Pytest
-        uses: poetry run pytest -v
+        run: poetry run pytest -v
