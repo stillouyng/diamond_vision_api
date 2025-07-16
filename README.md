@@ -1,5 +1,6 @@
 # Diamond Vision API
 
+[![Workflow](https://github.com/stillouyng/diamond_vision_api/actions/workflows/workflow.yml/badge.svg)](https://github.com/stillouyng/diamond_vision_api/actions/workflows/workflow.yml)
 
 ### Spam Checker
 Spam checker weren't available, so i've created a little one. :)
