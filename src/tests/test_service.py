@@ -27,6 +27,7 @@ async def test_add_complaint_success(service, mock_repo):
     assert result.id == 1
     mock_repo.create_complaint.assert_awaited_once_with(test_data)
 
+
 @pytest.mark.asyncio
 async def test_add_complaint_mock_repository_error(service, mock_repo):
     """Error adding a complaint."""
@@ -34,6 +35,7 @@ async def test_add_complaint_mock_repository_error(service, mock_repo):
 
     with pytest.raises(RepositoryError):
         await service.add_complaint(ComplaintCreate(text="Test"))
+
 
 @pytest.mark.asyncio
 async def test_add_complaint_unexpected_error(service, mock_repo):

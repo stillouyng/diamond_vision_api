@@ -89,7 +89,6 @@ async def test_huggingface_dependency(httpx_mock):
             await client_gen.__anext__()
 
 
-
 @pytest.mark.asyncio
 async def test_ip_api_dependency(httpx_mock):
     """Test Api IP client dependency with proper async handling"""
@@ -111,7 +110,6 @@ async def test_ip_api_dependency(httpx_mock):
     finally:
         with pytest.raises(StopAsyncIteration):
             await client_gen.__anext__()
-
 
 
 @pytest.mark.asyncio

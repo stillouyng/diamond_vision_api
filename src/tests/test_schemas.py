@@ -12,7 +12,6 @@ from src.models.enums import (
 )
 
 
-
 def test_complaint_create_valid(valid_complaint_data):
     """All fields are correct."""
     complaint = ComplaintCreate(**valid_complaint_data)
@@ -74,6 +73,7 @@ def test_valid_timestamp():
     )
     assert filters.timestamp is not None
 
+
 def test_invalid_timestamp_keys():
     """Incorrect keys."""
     with pytest.raises(ValueError):
@@ -97,6 +97,7 @@ def test_complaint_response_valid():
         category=ComplaintCategory.TECHNICAL,
     )
     assert response.id == 1
+
 
 def test_complaint_list_response_valid():
     """List Response is valid."""

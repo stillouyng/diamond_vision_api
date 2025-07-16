@@ -10,7 +10,9 @@ from src.models.schemas import ComplaintCreate, ComplaintFilters
 
 
 @pytest.mark.asyncio
-async def test_create_complaint_success(repo, mock_session, valid_complaint_data):
+async def test_create_complaint_success(
+        repo, mock_session, valid_complaint_data
+):
     """Successful complaint creation."""
     mock_session.add.return_value = None
     mock_session.commit.return_value = None
