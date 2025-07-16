@@ -19,7 +19,7 @@ class Complaint(Base):
     __tablename__ = "complaint"
 
     id: Mapped[int] = mapped_column(
-        Integer,primary_key=True, autoincrement=True
+        Integer, primary_key=True, autoincrement=True
     )
     text: Mapped[str] = mapped_column(
         String(500), nullable=False
