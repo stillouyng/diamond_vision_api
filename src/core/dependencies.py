@@ -1,5 +1,6 @@
-from contextlib import asynccontextmanager
-from typing import AsyncGenerator, Annotated, Any, Coroutine
+from typing import (
+    AsyncGenerator, Annotated
+)
 
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -54,6 +55,7 @@ ComplaintRepositoryDep = Annotated[
 ComplaintServiceDep = Annotated[
     ComplaintService, Depends(get_complaint_service)
 ]
+
 
 async def get_api_layer_client() -> AsyncGenerator[ExternalAPIClient, None]:
     try:

@@ -42,7 +42,8 @@ class ExternalAPIClient:
             "Content-Type": "application/json",
             "Accept": "application/json",
         }
-        if extra_headers: headers.update(extra_headers)
+        if extra_headers:
+            headers.update(extra_headers)
         return headers
 
     async def __request(
@@ -99,9 +100,13 @@ class ExternalAPIClient:
                 if attempt < self.retries:
                     await asyncio.sleep(1)
 
-            raise last_error if last_error else APIError("Unknown Error Occurred.")
+            raise last_error if last_error else APIError(
+                "Unknown Error Occurred."
+            )
 
-    get = lambda self, e, **kw: self.__request("GET", e, **kw)
-    post = lambda self, e, **kw: self.__request("POST", e, **kw)
-    put = lambda self, e, **kw: self.__request("PUT", e, **kw)
-    delete = lambda self, e, **kw: self.__request("DELETE", e, **kw)
+    get = lambda self, e, **kw: self.__request("GET", e, **kw)  # noqa: E731
+    post = lambda self, e, **kw: self.__request("POST", e, **kw)  # noqa: E731
+    put = lambda self, e, **kw: self.__request("PUT", e, **kw)  # noqa: E731
+    delete = lambda self, e, **kw: self.__request(  # noqa: E731
+        "DELETE", e, **kw
+    )

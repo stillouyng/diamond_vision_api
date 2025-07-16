@@ -1,4 +1,4 @@
-from fastapi import Request, status
+from fastapi import Request
 from fastapi.responses import JSONResponse
 
 from src.core.exceptions import AppException
