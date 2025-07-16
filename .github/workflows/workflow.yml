@@ -40,6 +40,29 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-poetry-
 
+      - name: Create .env file
+        run: |
+          cat << EOF >> src/.env
+          
+          # API
+          SENTIMENT_ANALYSIS_BASE_URL=${{ vars.SENTIMENT_ANALYSIS_BASE_URL }}
+          SENTIMENT_ANALYSIS_API_KEY=${{ secrets.SENTIMENT_ANALYSIS_API_KEY }}
+          
+          IP_API_BASE_URL=${{ vars.IP_API_BASE_URL }}
+          
+          # HuggingFace
+          OPEN_ROUTER_BASE_URL=${{ vars.OPEN_ROUTER_BASE_URL }}
+          OPEN_ROUTER_API_KEY=${{ secrets.OPEN_ROUTER_API_KEY }}
+          
+          # logging
+          LOG_LEVEL=INFO
+          LOG_FILE=logs/app.log
+          
+          # database
+          DB_URL=${{ vars.DB_URL }}
+          DB_URL_SYNC=${{ vars.DB_URL_SYNC }}
+          PAGINATION_LIMIT=50
+
       - name: Run Flake8
         run: poetry run flake8 .
 
