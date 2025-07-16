@@ -1,5 +1,6 @@
-from datetime import datetime
-from typing import List, Any, Coroutine, Sequence
+from typing import (
+    Any, Sequence
+)
 
 from sqlalchemy import Row, RowMapping
 
@@ -8,8 +9,9 @@ from src.core.exceptions import (
     DatabaseNotFound, RepositoryError, ServiceError, ComplaintNotFound
 )
 from src.models.models import Complaint
-from src.models.schemas import ComplaintCreate, ComplaintUpdate, \
-    ComplaintFilters
+from src.models.schemas import (
+    ComplaintCreate, ComplaintUpdate, ComplaintFilters
+)
 from src.repositories import ComplaintRepository
 
 
