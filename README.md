@@ -1,3 +1,6 @@
+[🇺🇸 English](README.md) |  [🇷🇺 Русский](./docs/README.ru.md)
+
+
 # Diamond Vision API
 
 [![Workflow](https://github.com/stillouyng/diamond_vision_api/actions/workflows/workflow.yml/badge.svg)](https://github.com/stillouyng/diamond_vision_api/actions/workflows/workflow.yml)
